@@ -25,31 +25,32 @@ struct Material
 		kSpecular.Set(0.25f, 0.25f, 0.25f);
 		kShininess = 1.f;
 	}
-	//Material(const std::string& material)
-	//{
-	//	if (material == "chrome"){
-	//		kAmbient.Set(0.25f, 0.25f, 0.25f);
-	//		kDiffuse.Set(0.4f, 0.4f, 0.4f);
-	//		kSpecular.Set(0.774597f, 0.774597f, 0.774597f);
-	//		kShininess = 76.8f;
-	//	}
-	//	if (material == "plastic"){
-	//		kAmbient.Set(0.9f, 0.9f, 0.9f);
-	//		kDiffuse.Set(0.01f, 0.01f, 0.01f);
-	//		kSpecular.Set(0.5f, 0.5f, 0.5);
-	//		kShininess = 32.f;
-	//	}
-	//	if (material == "polishedSilver"){
-	//			kAmbient.Set	(0.23125f, 0.23125f, 0.23125);
-	//			kDiffuse.Set	(0.2775f, 0.2775f, 0.2775);
-	//			kSpecular.Set	(0.773911f, 0.773911f, 0.773911f);
-	//			kShininess = 89.6f;
-	//	}
-	//	if (material == "silver"){
-	//			kAmbient.Set	(0.19225f, 0.19225f, 0.19225f);
-	//			kDiffuse.Set	(0.50754f, 0.50754f, 0.50754f);
-	//			kSpecular.Set	(0.508273f, 0.508273f, 0.508273f);
-	//			kShininess = 51.2f;
-	//	}
-	//}
+	void SetToChrome()
+	{
+		kAmbient.Set(0.25f, 0.25f, 0.25f);
+		kDiffuse.Set(0.4f, 0.4f, 0.4f);
+		kSpecular.Set(0.774597f, 0.774597f, 0.774597f);
+		kShininess = 76.8f;
+	}
+	void SetToPlastic()
+	{
+		kAmbient.Set(0.25f, 0.25f, 0.25f);
+		kDiffuse.Set(0.4f, 0.4f, 0.4f);
+		kSpecular.Set(0.774597f, 0.774597f, 0.774597f);
+		kShininess = 76.8f;
+	}
+	void SetToPolishedSilver()
+	{
+		kAmbient.Set(0.23125f, 0.23125f, 0.23125);
+		kDiffuse.Set(0.2775f, 0.2775f, 0.2775);
+		kSpecular.Set(0.773911f, 0.773911f, 0.773911f);
+		kShininess = 89.6f;
+	}
+	void SetToSilver()
+	{
+		kAmbient.Set(0.19225f, 0.19225f, 0.19225f);
+		kDiffuse.Set(0.50754f, 0.50754f, 0.50754f);
+		kSpecular.Set(0.508273f, 0.508273f, 0.508273f);
+		kShininess = 51.2f;
+	}
 };

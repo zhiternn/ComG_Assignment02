@@ -149,7 +149,7 @@ void Camera::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	currentPositionpos = target;
 
 	phi = 0.f;
-	theta = 0.f;
+	theta = -90.f;
 }
 
 /******************************************************************************/
@@ -176,28 +176,28 @@ void Camera::Update(double dt)
 	if (Application::IsKeyPressed(0x57)){ // W
 		Vector3 direction = (target - position).Normalized();
 		direction.y = 0;
-		position += direction * (float)(50.f * dt);
-		target += direction * (float)(50.f * dt);
+		position += direction * (float)(30.f * dt);
+		target += direction * (float)(30.f * dt);
 	}
 	if (Application::IsKeyPressed(0x41)){ // A
 		Vector3 direction = (target - position).Normalized();
 		Vector3 direction2(direction);
 		direction2.y += 1;
-		position += direction2.Cross(direction);
-		target += direction2.Cross(direction);
+		position += direction2.Cross(direction) * (float)(30.f * dt);
+		target += direction2.Cross(direction) * (float)(30.f * dt);
 	}
 	if (Application::IsKeyPressed(0x53)){ // S
 		Vector3 direction = (target - position).Normalized();
 		direction.y = 0;
-		position -= direction * (float)(50.f * dt);
-		target -= direction * (float)(50.f * dt);
+		position -= direction * (float)(30.f * dt);
+		target -= direction * (float)(30.f * dt);
 	}
 	if (Application::IsKeyPressed(0x44)){ // D
 		Vector3 direction = (target - position).Normalized();
 		Vector3 direction2(direction);
 		direction2.y += 1;
-		position += direction.Cross(direction2);
-		target += direction.Cross(direction2);
+		position += direction.Cross(direction2) * (float)(30.f * dt);
+		target += direction.Cross(direction2) * (float)(30.f * dt);
 	}
 	if (Application::IsKeyPressed(0x5A)){ // Z
 		position.y += (float)(20 * dt);
@@ -213,6 +213,11 @@ void Camera::Update(double dt)
 			phi += (float)(100 * dt);
 		}
 		target.Set(camX(phi, theta) + position.x, camY(phi, theta) + position.y, camZ(phi, theta) + position.z);
+		//Vector3 view = (target - position).Normalized();
+		//Vector3 right = view.Cross(up);
+		//right.y = 0;
+		//right.Normalize();
+		//up = right.Cross(view).Normalized();
 	}
 	if (Application::IsKeyPressed(VK_LEFT)){
 		theta -= (float)(100 * dt);
@@ -220,9 +225,14 @@ void Camera::Update(double dt)
 	}
 	if (Application::IsKeyPressed(VK_DOWN)){
 		if (phi >= -60.0f){// prevents camera from descending once it reached -90 degrees
-			phi -= (float)(100 * dt);
+			phi -= (float)(50 * dt);
 		}
 		target.Set(camX(phi, theta) + position.x, camY(phi, theta) + position.y, camZ(phi, theta) + position.z);
+		//Vector3 view = (target - position).Normalized();
+		//Vector3 right = view.Cross(up);
+		//right.y = 0;
+		//right.Normalize();
+		//up = right.Cross(view).Normalized();
 	}
 	if (Application::IsKeyPressed(VK_RIGHT)){
 		theta += (float)(100 * dt);

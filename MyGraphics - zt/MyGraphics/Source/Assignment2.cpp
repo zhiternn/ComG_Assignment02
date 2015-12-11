@@ -74,6 +74,16 @@ void Assignment2::Init()
 	camera.Init(Vector3(0, 10, 20), Vector3(0, 10, 0), Vector3(0, 1, 0));
 
 	//MESH GENERATORS
+	//meshList[GEO_QUAD] =		MeshBuilder::GenerateQuad("Quad", 1, 1, Color(1, 1, 1))
+	//meshList[GEO_CUBE] =		MeshBuilder::GenerateCube
+	//meshList[GEO_ELLIPSE] =		MeshBuilder::GenerateEllipse
+	//meshList[GEO_TORUS] =		MeshBuilder::GenerateTorus
+	//meshList[GEO_SPHERE] =		MeshBuilder::GenerateSphere
+	//meshList[GEO_HEMISPHERE] =	MeshBuilder::GenerateHemisphere
+	//meshList[GEO_RING] =		MeshBuilder::GenerateRing
+	//meshList[GEO_CYLINDER] =	MeshBuilder::GenerateCylinder
+	//meshList[GEO_CONE] =		MeshBuilder::GenerateCone
+
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("axis", 1000, 1000, 1000);
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("sphere", 0.5f, 0.5f, 0.5f, Color(1, 1, 1));
 	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("floor", 1000, 1000, Color(0.3f, 0.3f, 0.3f));
@@ -90,6 +100,7 @@ void Assignment2::Init()
 	meshList[GEO_HEAD_EYES2] = MeshBuilder::GenerateEllipse("Ellipse", 0.4f, 0.9f, Color(0, 0, 0.5f));
 	meshList[GEO_HEAD_NOSE] = MeshBuilder::GenerateCone("Ellipse", 0.15f, 0.15f, 0.15f, Color(1.f, 0.85f, 0.7f));
 	meshList[GEO_HELMET_CORE] = MeshBuilder::GenerateSphere2("Hemisphere", 3.5f, 3.5f, 3.5f, Color(0.22f, 0.45f, 0.72f), 13, 36);
+	meshList[GEO_HELMET_FOREHEAD] = MeshBuilder::GenerateSphere2("sphere", 3.4f, 3.4f, 3.4f, Color(0.22f, 0.45f, 0.72f), 18, 9);
 	meshList[GEO_HELMET_EARS] = MeshBuilder::GenerateTorus("Torus", 0.4f, 0.2f, 2.5f, 1.5f, 2.5f, Color(0.47f, 0.77f, 0.86f), 8, 4);
 	meshList[GEO_HELMET_EARS2] = MeshBuilder::GenerateHemisphere("Hemisphere", 0.75f, 0.25f, 0.75f, Color(0.8f, 0, 0), true);
 	meshList[GEO_HELMET_EARS2]->material.kAmbient.Set(0.8f, 0.8f, 0.8f);
@@ -392,6 +403,13 @@ void Assignment2::RenderHead()
 	RenderMesh(meshList[GEO_HELMET_CORE], true);
 	modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0);
+	modelStack.Rotate(-90, 1, 0, 0);
+	modelStack.Rotate(-45, 0, 1, 0);
+	RenderMesh(meshList[GEO_HELMET_FOREHEAD], true);
+	modelStack.PopMatrix();
+
 	for (int mirror = 1; mirror >= -1; mirror -= 2){
 		modelStack.PushMatrix();
 		modelStack.Translate(mirror*-3.35f, 0, 0);
@@ -479,11 +497,3 @@ void Assignment2::ArrangeTrees(int fromX, int toX, int fromZ, int toZ, int dista
 		}
 	}
 }
-/*
-modelStack.Translate(0, 3, 0);
-modelStack.Scale(1.3f, 6, 1.3f);
-
-
-modelStack.Translate(0, 4, 0);
-modelStack.Scale(3, 10, 3);
-*/
