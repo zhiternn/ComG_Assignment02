@@ -51,6 +51,19 @@ void Assignment2::Init()
 		"lights[0].kQ");
 	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID,
 		"lightEnabled");
+	//SECOND LIGHT
+	m_parameters[U_LIGHT1_POSITION] = glGetUniformLocation(m_programID,
+		"lights[1].position_cameraspace");
+	m_parameters[U_LIGHT1_COLOR] = glGetUniformLocation(m_programID,
+		"lights[1].color");
+	m_parameters[U_LIGHT1_POWER] = glGetUniformLocation(m_programID,
+		"lights[1].power");
+	m_parameters[U_LIGHT1_KC] = glGetUniformLocation(m_programID,
+		"lights[1].kC");
+	m_parameters[U_LIGHT1_KL] = glGetUniformLocation(m_programID,
+		"lights[1].kL");
+	m_parameters[U_LIGHT1_KQ] = glGetUniformLocation(m_programID,
+		"lights[1].kQ");
 	// Use our shader
 	glUseProgram(m_programID);
 
@@ -137,18 +150,36 @@ void Assignment2::Init()
 	glUniform1f(m_parameters[U_LIGHT0_KL], light[0].kL);
 	glUniform1f(m_parameters[U_LIGHT0_KQ], light[0].kQ);
 
+	//SECOND LIGHT
+	//setting up light object
+	light[1].position.Set(0, 10, 5);
+	light[1].color.Set(0, 0, 1);
+	light[1].power = 1;
+	light[1].kC = 1.f;
+		  
+	light[1].kL = 0.01f;
+	light[1].kQ = 0.001f;
+	//pass uniform parameters ( MUST BE AFTER glUseProgram() )
+	glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &light[1].color.r);
+	glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+	glUniform1f(m_parameters[U_LIGHT1_KC], light[1].kC);
+	glUniform1f(m_parameters[U_LIGHT1_KL], light[1].kL);
+	glUniform1f(m_parameters[U_LIGHT1_KQ], light[1].kQ);
+
 	//Initializing transforming matrices
 	ArrangeTrees(-300, 300, -300, 300, 100);
 
+	megamanPosition.Set(0, 6.75, 0);// position where we translated megaman's body core
+	megamanDirection.Set(0, 0, 1);// megaman default facing direction is the Z axis
+
 	onLights = true;
 
-	rightFootFwd = true;
-	upperLeg = 0.f;
-	lowerLeg = 0.f;
-	lowerLegDir = 1;
-
-	rotateAngle = 0.f;
+	upperLegRunning = lowerLegRunning = lowerLegRunValue = 0.f;
+	lowerLegDir = upperLegDir = 1;
 	runAnimation = 0.f;
+
+	upperArmShooting = cannonShooting = upperArmRunning = 0.f;
+	isShooting = false;
 }
 
 void Assignment2::RenderMesh(Mesh *mesh, bool enableLight)
@@ -212,25 +243,54 @@ void Assignment2::Update(double dt)
 		}
 	}
 
-	// upper legs degree = -60 - 60
-	// lower legs degree = -45 - -0
-	if (Application::IsKeyPressed(VK_SPACE)){
-		static int upperLegDir = 1;
-		if (upperLeg * upperLegDir > 60){
-			upperLegDir = -upperLegDir;
-			lowerLegDir = -lowerLegDir;
-		}
-		upperLeg += (float)(upperLegDir * 180 * dt);
+	if (Application::IsKeyPressed('T')){
+		isShooting = true;
 
-		if (lowerLeg * lowerLegDir < 30.f){
-			lowerLeg += (float)(lowerLegDir * 180 * dt);
-		}
-		runAnimation += (float)(30 * dt);
-		camera.target.z += (float)(30 * dt);
-		camera.position.z += (float)(30 * dt);
+		if (upperArmRunning == 0)//Makes sure arm is in proper position
+			AnimateShoot(dt);
 	}
+	else{
+		isShooting = false;
+		if (upperArmShooting < 0.f)// puts arms back into normal position
+			upperArmShooting += (float)(180 * dt);
+		if (cannonShooting > 0.f)// puts cannon back into normal position
+			cannonShooting -= (float)(180 * dt);
 
-	rotateAngle += (float)(10 * dt);
+		if (upperArmShooting > -5.f && upperArmShooting < 5.f){
+			upperArmShooting = 0.f;
+		}
+	}
+	if (Application::IsKeyPressed('R')){
+		AnimateRun(dt);
+	}
+	else{
+		/* UPPER LEG RUNNING */
+		if (upperLegRunning > 0)
+			upperLegRunning -= (float)(180 * dt);
+		else if (upperLegRunning < 0)
+			upperLegRunning += (float)(180 * dt);
+
+		/* LOWER LEG RUNNING */
+		if (lowerLegRunning > 0)
+			lowerLegRunning -= (float)(180 * dt);
+		else if (lowerLegRunning < 0)
+			lowerLegRunning += (float)(180 * dt);
+
+		/* LOWER LEG VALUE */
+		if (lowerLegRunValue > 0.f)
+			lowerLegRunValue -= (float)(180 * dt);
+
+		//SET TO ZERO IF NEAR ZERO
+		if (upperLegRunning > -5.f && upperLegRunning < 5.f){
+			upperLegRunning = 0.f;
+		}
+		if (lowerLegRunning > -5.f && lowerLegRunning < 5.f){
+			lowerLegRunning = 0.f;
+
+		/* UPPER ARM RUNNING */
+		upperArmRunning = upperLegRunning;
+		}
+	}
 }
 
 void Assignment2::Render()
@@ -247,6 +307,8 @@ void Assignment2::Render()
 	modelStack.LoadIdentity();
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+	lightPosition_cameraspace = viewStack.Top() * light[1].position;
+	glUniform3fv(m_parameters[U_LIGHT1_POSITION], 2, &lightPosition_cameraspace.x);
 
 	RenderMesh(meshList[GEO_AXES], false);
 
@@ -287,11 +349,9 @@ void Assignment2::Render()
 	/*******************************************************************************/
 	//LEVEL 2 - JOINT AND UPPER ARM - START
 	for (int mirror = 1; mirror >= -1; mirror -= 2){
-		float upperArm = -upperLeg;
-
 		modelStack.PushMatrix();
 		modelStack.Translate(mirror*(-1.5f), 1.2f, 0);
-		modelStack.Rotate(mirror*upperArm, 1, 0, 0);
+		modelStack.Rotate(mirror*-upperArmRunning + upperArmShooting, 1, 0, 0);
 		modelStack.Rotate(mirror*60, 0, 0, 1);
 	/*******************************************************************************/
 		
@@ -301,6 +361,7 @@ void Assignment2::Render()
 	// LEVEL 3 - CANNON - START
 		modelStack.PushMatrix();
 		modelStack.Translate(mirror*(-3.5f), 0, 0);
+		modelStack.Rotate(mirror*cannonShooting, 0, 0, 1);
 	/*******************************************************************************/
 
 		RenderLowerArm(mirror);
@@ -320,7 +381,7 @@ void Assignment2::Render()
 	// LEVEL 2 - UPPER LEG AND JOINT - START
 	for (int mirror = 1; mirror >= -1; mirror -= 2){
 		modelStack.PushMatrix();
-		modelStack.RotateFromPivot(0, -1.75, 0, mirror*upperLeg, 1, 0, 0);
+		modelStack.RotateFromPivot(0, -1.75, 0, mirror*upperLegRunning, 1, 0, 0);
 		modelStack.Translate(mirror*-0.9f, -3.5f, 0);
 		/*******************************************************************************/
 
@@ -330,7 +391,7 @@ void Assignment2::Render()
 		// LEVEL 3 - LOWER LEG AND FOOT - START
 		modelStack.PushMatrix();
 		modelStack.Translate(0, -2, 0);
-		modelStack.RotateFromPivot(0, 1, 0, mirror*lowerLeg + 30.f, 1, 0, 0);
+		modelStack.RotateFromPivot(0, 1, 0, mirror*lowerLegRunning + lowerLegRunValue, 1, 0, 0);
 		/*******************************************************************************/
 
 		RenderLowerLeg(mirror);
@@ -496,4 +557,52 @@ void Assignment2::ArrangeTrees(int fromX, int toX, int fromZ, int toZ, int dista
 			treeArrangementData.push_back(sH);									// SCALE X && Z
 		}
 	}
+}
+
+void Assignment2::AnimateRun(double dt)
+{
+	// upper legs degree = -60 - 60
+	// lower legs degree = -30 - 30
+	lowerLegRunValue = 30.f;
+
+	if (upperLegRunning * upperLegDir > 60){
+		upperLegDir = -upperLegDir;
+		lowerLegDir = -lowerLegDir;
+	}
+	upperLegRunning += (float)(upperLegDir * 180 * dt);
+
+	if (lowerLegRunning * lowerLegDir < 30.f){
+		lowerLegRunning += (float)(lowerLegDir * 180 * dt);
+	}
+	if (upperArmShooting >= 0.f){
+		if (!isShooting){ // RUN ANIMATION FOR UPPER ARMS
+			if (upperArmRunning > upperLegRunning - 3.f && upperArmRunning < upperLegRunning + 3.f){
+				upperArmRunning = upperLegRunning;
+			}
+			else{
+				if (upperArmRunning < upperLegRunning)
+					upperArmRunning += (float)(200 * dt);
+				else if (upperArmRunning > upperLegRunning)
+					upperArmRunning -= (float)(200 * dt);
+			}
+		}
+		else{ // ELSE PUT UPPER ARM BACK INTO POSITION
+			if (upperArmRunning > 0)
+				upperArmRunning -= (float)(180 * dt);
+			else if (upperArmRunning < 0)
+				upperArmRunning += (float)(180 * dt);
+
+			if (upperArmRunning > -5.f && upperArmRunning < 5.f)
+				upperArmRunning = 0.f;
+		}
+	}
+}
+
+void Assignment2::AnimateShoot(double dt)
+{
+	upperArmRunning = 0.f;
+	if (upperArmShooting > -90.f)
+		upperArmShooting -= (float)(180 * dt);
+	if (cannonShooting < 30.f)
+		cannonShooting += (float)(90 * dt);
 }

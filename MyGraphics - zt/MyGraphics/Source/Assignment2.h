@@ -68,6 +68,12 @@ class Assignment2 : public Scene
 		U_LIGHT0_KC,
 		U_LIGHT0_KL,
 		U_LIGHT0_KQ,
+		U_LIGHT1_POSITION,
+		U_LIGHT1_COLOR,
+		U_LIGHT1_POWER,
+		U_LIGHT1_KC,
+		U_LIGHT1_KL,
+		U_LIGHT1_KQ,
 		U_LIGHTENABLED,
 
 		U_TOTAL
@@ -95,28 +101,34 @@ private:
 
 	void ArrangeTrees(int fromX, int toX, int fromZ, int toZ, int distanceBetweenTrees);
 
+	void AnimateRun(double dt);
+	void AnimateShoot(double dt);
+
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 	Mesh *meshList[NUM_GEOMETRY];
 
-	float rotateAngle, runAnimation;
-	float upperLeg, lowerLeg;
+	float runAnimation;
+	float upperLegRunning, lowerLegRunning, lowerLegRunValue;
+	int lowerLegDir, upperLegDir;
 
-	int lowerLegDir;
+	float upperArmShooting, upperArmRunning, cannonShooting;
+	bool isShooting;
 
-	bool rightFootFwd;
 	bool onLights;
 
 	vector<float> treeArrangementData;
 
 	Camera camera;
+
+	Vector3 megamanPosition, megamanDirection;
 	
 	Mtx44 MVP;
 
 	MS modelStack, viewStack, projectionStack;
 
-	Light light[1];
+	Light light[2];
 };
 
 #endif
