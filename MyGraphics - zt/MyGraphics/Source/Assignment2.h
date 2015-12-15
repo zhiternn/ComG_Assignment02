@@ -62,21 +62,34 @@ class Assignment2 : public Scene
 		U_MATERIAL_DIFFUSE,
 		U_MATERIAL_SPECULAR,
 		U_MATERIAL_SHININESS,
+
 		U_LIGHT0_POSITION,
 		U_LIGHT0_COLOR,
 		U_LIGHT0_POWER,
 		U_LIGHT0_KC,
 		U_LIGHT0_KL,
 		U_LIGHT0_KQ,
+		U_LIGHT0_TYPE,
+		U_LIGHT0_SPOTDIRECTION,
+		U_LIGHT0_COSCUTOFF,
+		U_LIGHT0_COSINNER,
+		U_LIGHT0_EXPONENT,
+
 		U_LIGHT1_POSITION,
 		U_LIGHT1_COLOR,
 		U_LIGHT1_POWER,
 		U_LIGHT1_KC,
 		U_LIGHT1_KL,
 		U_LIGHT1_KQ,
-		U_LIGHTENABLED,
+		U_LIGHT1_TYPE,
+		U_LIGHT1_SPOTDIRECTION,
+		U_LIGHT1_COSCUTOFF,
+		U_LIGHT1_COSINNER,
+		U_LIGHT1_EXPONENT,
 
-		U_TOTAL
+		U_LIGHTENABLED,
+		U_NUMLIGHTS,
+		U_TOTAL,
 	};
 
 public:
@@ -109,12 +122,11 @@ private:
 	unsigned m_parameters[U_TOTAL];
 	Mesh *meshList[NUM_GEOMETRY];
 
-	float runAnimation;
 	float upperLegRunning, lowerLegRunning, lowerLegRunValue;
 	int lowerLegDir, upperLegDir;
 
 	float upperArmShooting, upperArmRunning, cannonShooting;
-	bool isShooting;
+	bool isShootingAnimation, canShoot;
 
 	bool onLights;
 
