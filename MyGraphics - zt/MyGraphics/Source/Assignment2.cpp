@@ -94,6 +94,8 @@ void Assignment2::Init()
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("sphere", 0.5f, 0.5f, 0.5f, Color(1, 1, 1));
 	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("floor", 1000, 1000, Color(0.3f, 0.3f, 0.3f));
 
+	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("sphere", 0.7f, 0.3f, 0.3f, Color(0.61f, 0.61f, 0));
+
 	meshList[GEO_TREE_LEAVES] = MeshBuilder::GenerateCone("Cone", 1, 1, 1, Color(0, 0.8f, 0));
 	meshList[GEO_TREE_TRUNK] = MeshBuilder::GenerateCylinder("Cylinder", 1, 1, 1, Color(0.85f, 0.65f, 0.13f));
 
@@ -124,8 +126,6 @@ void Assignment2::Init()
 	meshList[GEO_ARM_CANNON_TIP] = MeshBuilder::GenerateTorus("torus", 0.5f, 0.25f, 1.f, 1.f, 1.f, Color(0.22f, 0.45f, 0.72f));
 	meshList[GEO_ARM_CANNON_TIP]->material.SetToArmorMaterial();
 
-	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("sphere", 0.7f, 0.3f, 0.3f, Color(0.61f, 0.61f, 0));
-
 	meshList[GEO_LEG_UPPER] = MeshBuilder::GenerateCylinder("cylinder", 0.5f, 0.5f, 2.f, Color(0.47f, 0.77f, 0.86f), 0.55, 0.55);
 	meshList[GEO_LEG_UPPER]->material.SetToArmorMaterial();
 	meshList[GEO_LEG_JOINT] = MeshBuilder::GenerateSphere("sphere", 0.55f, 0.55f, 0.55f, Color(0.47f, 0.77f, 0.86f));
@@ -134,6 +134,12 @@ void Assignment2::Init()
 	meshList[GEO_LEG_LOWER]->material.SetToArmorMaterial();
 	meshList[GEO_LEG_FOOT] = MeshBuilder::GenerateHemisphere("hemisphere", 0.9f, 1, 1.3f, Color(0.22f, 0.45f, 0.72f));
 	meshList[GEO_LEG_FOOT]->material.SetToArmorMaterial();
+
+	meshList[GEO_SWORD_HAND] = MeshBuilder::GenerateCylinder("hilt", 0.3f, 0.1f, 0.5f, Color(0.8f, 0.8f, 0.8f), 0.5f, 0.5f);
+	meshList[GEO_SWORD_HILT] = MeshBuilder::GenerateCylinder("hilt", 0.3f, 0.1f, 0.3f, Color(0.8f, 0.8f, 0.8f));
+	meshList[GEO_SWORD_GUARD1] = MeshBuilder::GenerateCylinder("hilt", 0.4f, 0.2f, 0.5f, Color(0.8f, 0.8f, 0.8f), 0.3f, 0.1f);
+	meshList[GEO_SWORD_GUARD2] = MeshBuilder::GenerateCylinder("hilt", 0.3f, 0.1f, 0.3f, Color(0.8f, 0.8f, 0.8f), 0.4f, 0.2f);
+	meshList[GEO_SWORD_MAINBLADE] = MeshBuilder::GenerateCone("blade", 1.f, 0.1f, 5.f, Color(0, 1, 0));
 
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
 	//setting up light object
@@ -187,7 +193,7 @@ void Assignment2::Init()
 	//Initializing transforming matrices
 	ArrangeTrees(-300, 300, -300, 300, 100);
 
-	mm_Pos.Set(0, 6.75f, 0);// position where we translated megaman's body core
+	mm_Pos.Set(0, 6.6f, 0);// position where we translated megaman's body core
 	mm_Dir.Set(0, 0, 1);// megaman default facing direction is the Z axis
 	mm_Rotation = 0.f;
 	bulletDir.Set(0, 0, 0);
@@ -465,11 +471,24 @@ void Assignment2::Render()
 		modelStack.Rotate(mirror*cannonShooting, 0, 0, 1);
 	/*******************************************************************************/
 
-		RenderLowerArm(mirror);
-
+		//RenderLowerArm(mirror);
 
 	/*******************************************************************************/
 	// LEVEL 3 - CANNON - END
+		modelStack.PopMatrix();
+	/*******************************************************************************/
+
+	/*******************************************************************************/
+	// LEVEL 3 - SWORD - START
+		modelStack.PushMatrix();
+		modelStack.Translate(mirror*(-2.75f), 0, 0);
+		modelStack.Rotate(mirror*90, 0, 0, 1);
+	/*******************************************************************************/
+
+	RenderZeroSword(mirror);
+
+	/*******************************************************************************/
+	// LEVEL 3 - SWORD - END
 		modelStack.PopMatrix();
 	/*******************************************************************************/
 
@@ -528,6 +547,11 @@ void Assignment2::Render()
 	}
 
 	RenderTrees();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 17, 0);
+	RenderZeroSword(1);
+	modelStack.PopMatrix();
 }
 
 void Assignment2::Exit()
@@ -535,6 +559,34 @@ void Assignment2::Exit()
 	// Cleanup VBO here
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	glDeleteProgram(m_programID);
+}
+
+void Assignment2::RenderZeroSword(int mirror)
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_SWORD_HAND], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0.4f, 0);
+	RenderMesh(meshList[GEO_SWORD_HILT], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0.4f, 0);
+	RenderMesh(meshList[GEO_SWORD_GUARD1], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0.4f, 0);
+	RenderMesh(meshList[GEO_SWORD_GUARD2], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0.15f, 0);
+	RenderMesh(meshList[GEO_SWORD_MAINBLADE], true);
+	
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
 }
 
 void Assignment2::RenderTrees()
@@ -744,7 +796,6 @@ void Assignment2::moveMegaman(double dt)
 	}
 	if (Application::IsKeyPressed(0x53)){ // S
 		mm_Pos -= mm_Dir * (float)(moveSpd * dt);
-
 		camera.position -= mm_Dir * (float)(moveSpd * dt);
 	}
 	else{

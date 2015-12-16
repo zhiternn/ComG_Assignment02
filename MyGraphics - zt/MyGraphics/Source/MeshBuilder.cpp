@@ -545,12 +545,6 @@ Mesh* MeshBuilder::GenerateSphere2(const std::string &meshName, float lengthX, f
 			index_buffer_data.push_back((stack + 1) * (numSlices + 1) + slice);
 		}
 	}
-	for (unsigned stack = 0; stack < numStacks; ++stack){
-		for (unsigned slice = 0; slice <= numSlices; ++slice){
-			index_buffer_data.push_back((stack + 1) * (numSlices + 1) + slice);
-			index_buffer_data.push_back(stack * (numSlices + 1) + slice);
-		}
-	}
 
 	Mesh *mesh = new Mesh(meshName);
 

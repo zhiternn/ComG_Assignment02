@@ -52,6 +52,12 @@ class Assignment2 : public Scene
 		GEO_LEG_FOOT,
 		GEO_BULLET,
 
+		GEO_SWORD_HAND,
+		GEO_SWORD_HILT,
+		GEO_SWORD_GUARD1,
+		GEO_SWORD_GUARD2,
+		GEO_SWORD_MAINBLADE,
+
 		NUM_GEOMETRY
 	};
 	enum UNIFORM_TYPE
@@ -108,6 +114,7 @@ private:
 	void RenderTrees();
 	void RenderHead();
 	void RenderBody();
+	void RenderZeroSword(int mirror);
 	void RenderUpperArm(int mirror);
 	void RenderLowerArm(int mirror);
 	void RenderUpperLeg(int mirror);
