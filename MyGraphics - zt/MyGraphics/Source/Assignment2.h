@@ -50,6 +50,7 @@ class Assignment2 : public Scene
 		GEO_LEG_JOINT,
 		GEO_LEG_LOWER,
 		GEO_LEG_FOOT,
+		GEO_BULLET,
 
 		NUM_GEOMETRY
 	};
@@ -111,30 +112,43 @@ private:
 	void RenderLowerArm(int mirror);
 	void RenderUpperLeg(int mirror);
 	void RenderLowerLeg(int mirror);
-
 	void ArrangeTrees(int fromX, int toX, int fromZ, int toZ, int distanceBetweenTrees);
-
 	void AnimateRun(double dt);
 	void AnimateShoot(double dt);
+	void moveMegaman(double dt);
 
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 	Mesh *meshList[NUM_GEOMETRY];
 
-	float upperLegRunning, lowerLegRunning, lowerLegRunValue;
-	int lowerLegDir, upperLegDir;
+	float upperLegRunning;
+	float lowerLegRunning;
+	float lowerLegRunValue;
+	float upperArmShooting;
+	float upperArmRunning;
+	float cannonShooting;
+	float mm_Rotation;
+	float inputDelay;
+	float bulletX;
+	float bulletZ;
+	float atkSpd;
 
-	float upperArmShooting, upperArmRunning, cannonShooting;
-	bool isShootingAnimation, canShoot;
-
+	bool isShootingAnimation;
+	bool readyForBullets;
+	bool controlMM;
 	bool onLights;
+	bool animateRun;
+
+	int lowerLegDir;
+	int upperLegDir;
 
 	vector<float> treeArrangementData;
 
-	Camera camera;
+	Vector3 mm_Pos, mm_Dir;
+	Vector3 bulletDir;
 
-	Vector3 megamanPosition, megamanDirection;
+	Camera camera;
 	
 	Mtx44 MVP;
 

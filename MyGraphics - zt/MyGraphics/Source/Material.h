@@ -53,4 +53,11 @@ struct Material
 		kSpecular.Set(0.508273f, 0.508273f, 0.508273f);
 		kShininess = 51.2f;
 	}
+	void SetToArmorMaterial()
+	{
+		kAmbient.Set(0.5f, 0.5f, 0.5f);
+		kDiffuse.Set(0.5f, 0.5f, 0.5f);
+		kSpecular.Set(1.f, 1.f, 1.f);
+		kShininess = 10.f;
+	}
 };

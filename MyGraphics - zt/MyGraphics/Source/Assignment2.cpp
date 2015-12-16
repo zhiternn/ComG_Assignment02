@@ -98,35 +98,42 @@ void Assignment2::Init()
 	meshList[GEO_TREE_TRUNK] = MeshBuilder::GenerateCylinder("Cylinder", 1, 1, 1, Color(0.85f, 0.65f, 0.13f));
 
 	meshList[GEO_HEAD_CORE] = MeshBuilder::GenerateSphere2("sphere", 3.4f, 3.4f, 3.4f, Color(1.f, 0.85f, 0.7f), 18, 27);
-	meshList[GEO_HEAD_CORE]->material.kAmbient.Set(0.9f, 0.9f, 0.9f);
-	meshList[GEO_HEAD_CORE]->material.kDiffuse.Set(0.1f, 0.1f, 0.1f);
-	meshList[GEO_HEAD_CORE]->material.kSpecular.Set(0.f, 0.f, 0.f);
-	meshList[GEO_HEAD_CORE]->material.kShininess = 1.f;
 	meshList[GEO_HEAD_EYES1] = MeshBuilder::GenerateEllipse("Ellipse", 0.5f, 1.f, Color(1, 1, 1));
 	meshList[GEO_HEAD_EYES2] = MeshBuilder::GenerateEllipse("Ellipse", 0.4f, 0.9f, Color(0, 0, 0.5f));
 	meshList[GEO_HEAD_NOSE] = MeshBuilder::GenerateCone("Ellipse", 0.15f, 0.15f, 0.15f, Color(1.f, 0.85f, 0.7f));
 	meshList[GEO_HELMET_CORE] = MeshBuilder::GenerateSphere2("Hemisphere", 3.5f, 3.5f, 3.5f, Color(0.22f, 0.45f, 0.72f), 13, 36);
-	meshList[GEO_HELMET_FOREHEAD] = MeshBuilder::GenerateSphere2("sphere", 3.4f, 3.4f, 3.4f, Color(0.22f, 0.45f, 0.72f), 18, 9);
+	meshList[GEO_HELMET_CORE]->material.SetToArmorMaterial();
+	meshList[GEO_HELMET_FOREHEAD] = MeshBuilder::GenerateSphere2("sphere", 3.4f, 3.4f, 3.4f, Color(0.22f, 0.45f, 0.72f), 4, 9);
+	meshList[GEO_HELMET_FOREHEAD]->material.SetToArmorMaterial();
 	meshList[GEO_HELMET_EARS] = MeshBuilder::GenerateTorus("Torus", 0.4f, 0.2f, 2.5f, 1.5f, 2.5f, Color(0.47f, 0.77f, 0.86f), 8, 4);
+	meshList[GEO_HELMET_EARS]->material.SetToArmorMaterial();
 	meshList[GEO_HELMET_EARS2] = MeshBuilder::GenerateHemisphere("Hemisphere", 0.75f, 0.25f, 0.75f, Color(0.8f, 0, 0), true);
-	meshList[GEO_HELMET_EARS2]->material.kAmbient.Set(0.8f, 0.8f, 0.8f);
-	meshList[GEO_HELMET_EARS2]->material.kDiffuse.Set(0.5f, 0.5f, 0.5f);
-	meshList[GEO_HELMET_EARS2]->material.kSpecular.Set(0.8f, 0.8f, 0.8f);
-	meshList[GEO_HELMET_EARS2]->material.kShininess = 1.f;
+	meshList[GEO_HELMET_EARS2]->material.SetToArmorMaterial();
 
 	meshList[GEO_BODY_UPPER] = MeshBuilder::GenerateCylinder("MM_BODY", 1.5f, 1.5f, 3.5f, Color(0.47f, 0.77f, 0.86f), 1.7f, 1.5f);
+	meshList[GEO_BODY_UPPER]->material.SetToArmorMaterial();
 	meshList[GEO_BODY_LOWER] = MeshBuilder::GenerateHemisphere("MM_BODY", 1.7f, 1.5f, 1.5f, Color(0.22f, 0.45f, 0.72f), true);
+	meshList[GEO_BODY_LOWER]->material.SetToArmorMaterial();
 
 	meshList[GEO_SHOULDER] = MeshBuilder::GenerateSphere("sphere", 0.5f, 0.5f, 0.5f, Color(0.47f, 0.77f, 0.86f));
+	meshList[GEO_SHOULDER]->material.SetToArmorMaterial();
 	meshList[GEO_ARM_UPPER] = MeshBuilder::GenerateCylinder("cylinder", 0.5f, 0.5f, 2.5f, Color(0.47f, 0.77f, 0.86f));
+	meshList[GEO_ARM_UPPER]->material.SetToArmorMaterial();
 	meshList[GEO_ARM_CANNON_CORE] = MeshBuilder::GenerateSphere("sphere", 1.7f, 1.3f, 1.3f, Color(0.22f, 0.45f, 0.72f));
+	meshList[GEO_ARM_CANNON_CORE]->material.SetToArmorMaterial();
 	meshList[GEO_ARM_CANNON_TIP] = MeshBuilder::GenerateTorus("torus", 0.5f, 0.25f, 1.f, 1.f, 1.f, Color(0.22f, 0.45f, 0.72f));
+	meshList[GEO_ARM_CANNON_TIP]->material.SetToArmorMaterial();
 
+	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("sphere", 0.7f, 0.3f, 0.3f, Color(0.61f, 0.61f, 0));
 
 	meshList[GEO_LEG_UPPER] = MeshBuilder::GenerateCylinder("cylinder", 0.5f, 0.5f, 2.f, Color(0.47f, 0.77f, 0.86f), 0.55, 0.55);
+	meshList[GEO_LEG_UPPER]->material.SetToArmorMaterial();
 	meshList[GEO_LEG_JOINT] = MeshBuilder::GenerateSphere("sphere", 0.55f, 0.55f, 0.55f, Color(0.47f, 0.77f, 0.86f));
+	meshList[GEO_LEG_JOINT]->material.SetToArmorMaterial();
 	meshList[GEO_LEG_LOWER] = MeshBuilder::GenerateCylinder("cylinder", 0.6f, 0.6f, 2.f, Color(0.22f, 0.45f, 0.72f), 0.9f, 0.9f);
+	meshList[GEO_LEG_LOWER]->material.SetToArmorMaterial();
 	meshList[GEO_LEG_FOOT] = MeshBuilder::GenerateHemisphere("hemisphere", 0.9f, 1, 1.3f, Color(0.22f, 0.45f, 0.72f));
+	meshList[GEO_LEG_FOOT]->material.SetToArmorMaterial();
 
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
 	//setting up light object
@@ -155,7 +162,7 @@ void Assignment2::Init()
 	//SECOND LIGHT
 	//setting up light object
 	light[1].type = Light::LIGHT_POINT;
-	light[1].position.Set(0, 10, 0);
+	light[1].position.Set(0, 8, 0);
 	light[1].color.Set(1, 1, 1);
 	light[1].power = 1;
 	light[1].kC = 1.f;
@@ -180,17 +187,23 @@ void Assignment2::Init()
 	//Initializing transforming matrices
 	ArrangeTrees(-300, 300, -300, 300, 100);
 
-	megamanPosition.Set(0, 6.75, 0);// position where we translated megaman's body core
-	megamanDirection.Set(0, 0, 1);// megaman default facing direction is the Z axis
+	mm_Pos.Set(0, 6.75f, 0);// position where we translated megaman's body core
+	mm_Dir.Set(0, 0, 1);// megaman default facing direction is the Z axis
+	mm_Rotation = 0.f;
+	bulletDir.Set(0, 0, 0);
 
 	onLights = true;
+	controlMM = false;
+	isShootingAnimation = false;
+	readyForBullets = false;
+	animateRun = false;
 
 	upperLegRunning = lowerLegRunning = lowerLegRunValue = 0.f;
-	lowerLegDir = upperLegDir = 1;
-
 	upperArmShooting = cannonShooting = upperArmRunning = 0.f;
-	isShootingAnimation = false;
-	canShoot = false;
+	lowerLegDir = upperLegDir = 1;
+	bulletX = bulletZ = atkSpd = 0.f;
+	
+	inputDelay = 2.f;
 }
 
 void Assignment2::RenderMesh(Mesh *mesh, bool enableLight)
@@ -223,7 +236,28 @@ void Assignment2::RenderMesh(Mesh *mesh, bool enableLight)
 
 void Assignment2::Update(double dt)
 {
-	camera.Update(dt);
+	if (Application::IsKeyPressed('P') && inputDelay >= 2.f){
+		inputDelay = 0.f;
+		if (controlMM){
+			controlMM = false;
+		}
+		else{
+			controlMM = true;
+			camera.target = mm_Pos;
+		}
+	}
+	else if (inputDelay < 2.f){
+		inputDelay += (float)(10 * dt);
+	}
+	if(controlMM){
+		camera.target = mm_Pos;
+		moveMegaman(dt);
+		camera.Update2(dt);
+	}
+	else{
+		camera.Update(dt);
+	}
+
 	if (Application::IsKeyPressed(0x31))
 		glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed(0x32))
@@ -266,14 +300,14 @@ void Assignment2::Update(double dt)
 		glUniform1i(m_parameters[U_LIGHT0_TYPE], light[0].type);
 	}
 
-	if (Application::IsKeyPressed('T')){
+	if (Application::IsKeyPressed(VK_SPACE)){
 		isShootingAnimation = true;
 
 		if (upperArmRunning == 0)//Makes sure arm is in proper position
 			AnimateShoot(dt);
 	}
 	else{
-		canShoot = false;
+		readyForBullets = false;
 		isShootingAnimation = false;
 		if (upperArmShooting < 0.f)// puts arms back into normal position
 			upperArmShooting += (float)(180 * dt);
@@ -284,7 +318,27 @@ void Assignment2::Update(double dt)
 			upperArmShooting = 0.f;
 		}
 	}
-	if (Application::IsKeyPressed('R')){
+	if (readyForBullets){
+		if (atkSpd == 0.f){
+			bulletDir = mm_Dir;
+		}
+		bulletX += (float)(bulletDir.x * 200 * dt);
+		bulletZ += (float)(bulletDir.z * 200 * dt);
+		atkSpd += (float)(30 * dt);
+		if (atkSpd > 10.f){
+			atkSpd = 0.f;
+			bulletX = 0;
+			bulletZ = 0;
+		}
+		light[1].position.x = bulletX + mm_Pos.x;
+		light[1].position.z = bulletZ + mm_Pos.z;
+	}
+	else{
+		atkSpd = 0.f;
+		bulletX = 0;
+		bulletZ = 0;
+	}
+	if (animateRun){
 		AnimateRun(dt);
 	}
 	else{
@@ -311,8 +365,8 @@ void Assignment2::Update(double dt)
 		if (lowerLegRunning > -5.f && lowerLegRunning < 5.f){
 			lowerLegRunning = 0.f;
 
-		/* UPPER ARM RUNNING */
-		upperArmRunning = upperLegRunning;
+			/* UPPER ARM RUNNING */
+			upperArmRunning = upperLegRunning;
 		}
 	}
 }
@@ -345,7 +399,7 @@ void Assignment2::Render()
 		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
-	if (canShoot){
+	if (readyForBullets){
 		light[1].color.Set(1, 1, 1);
 		glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &light[1].color.r);
 	}
@@ -375,7 +429,8 @@ void Assignment2::Render()
 	/*******************************************************************************/
 	// LEVEL 1 - BODY - START
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 6.75f, 0);
+	modelStack.Translate(mm_Pos.x, mm_Pos.y, mm_Pos.z);
+	modelStack.Rotate(mm_Rotation, 0, 1, 0);
 	/*******************************************************************************/
 
 	RenderBody();
@@ -411,6 +466,7 @@ void Assignment2::Render()
 	/*******************************************************************************/
 
 		RenderLowerArm(mirror);
+
 
 	/*******************************************************************************/
 	// LEVEL 3 - CANNON - END
@@ -457,6 +513,19 @@ void Assignment2::Render()
 	// LEVEL 1 - BODY - END
 	modelStack.PopMatrix();
 	/*******************************************************************************/
+
+	// render bullet
+	if (readyForBullets){
+		for (int mirror = 1; mirror >= -1; mirror -= 2){
+			modelStack.PushMatrix();
+			modelStack.Translate(mm_Pos.x + bulletX, 0, mm_Pos.z + bulletZ);
+			modelStack.Rotate(mm_Rotation, 0, 1, 0);
+			modelStack.Translate(mirror * -3.3f, 8, 3);
+			modelStack.Rotate(90, 0, 1, 0);
+			RenderMesh(meshList[GEO_BULLET], false);
+			modelStack.PopMatrix();
+		}
+	}
 
 	RenderTrees();
 }
@@ -511,7 +580,6 @@ void Assignment2::RenderHead()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 0, 0);
 	modelStack.Rotate(-90, 1, 0, 0);
 	modelStack.Rotate(-45, 0, 1, 0);
 	RenderMesh(meshList[GEO_HELMET_FOREHEAD], true);
@@ -652,6 +720,46 @@ void Assignment2::AnimateShoot(double dt)
 	if (cannonShooting < 30.f)
 		cannonShooting += (float)(90 * dt);
 	if (upperArmShooting <= -90.f && cannonShooting >= 30.f){
-		canShoot = true;
+		readyForBullets = true;
+	}
+}
+
+void Assignment2::moveMegaman(double dt)
+{
+	float rotSpd = 100.f;
+	float moveSpd = 50.f;
+	int detectKeyPress = 2;
+	if (Application::IsKeyPressed(0x57)){ // W
+		mm_Pos += mm_Dir * (float)(moveSpd * dt);
+		camera.position += mm_Dir * (float)(moveSpd * dt);
+	}
+	else{
+		detectKeyPress--;
+	}
+	if (Application::IsKeyPressed(0x41)){ // A
+		mm_Rotation += (float)(rotSpd * dt);
+		Mtx44 rotate;
+		rotate.SetToRotation(mm_Rotation, 0, 1, 0);
+		mm_Dir = rotate * Vector3(0, 0, 1);
+	}
+	if (Application::IsKeyPressed(0x53)){ // S
+		mm_Pos -= mm_Dir * (float)(moveSpd * dt);
+
+		camera.position -= mm_Dir * (float)(moveSpd * dt);
+	}
+	else{
+		detectKeyPress--;
+	}
+	if (Application::IsKeyPressed(0x44)){ // D
+		mm_Rotation -= (float)(rotSpd * dt);
+		Mtx44 rotate;
+		rotate.SetToRotation(mm_Rotation, 0, 1, 0);
+		mm_Dir = rotate * Vector3(0, 0, 1);
+	}
+	if (detectKeyPress > 0){
+		animateRun = true;
+	}
+	else{
+		animateRun = false;
 	}
 }
