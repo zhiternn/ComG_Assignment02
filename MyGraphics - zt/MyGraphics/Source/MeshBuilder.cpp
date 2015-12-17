@@ -75,8 +75,15 @@ Mesh* MeshBuilder::GenerateQuad(const std::string &meshName, float lengthX, floa
 	v.pos.Set(lengthX / 2, lengthY / 2, 0);		v.color = color;	v.normal.Set(0, 0, 1);		vertex_buffer_data.push_back(v);
 	v.pos.Set(lengthX / 2, -lengthY / 2, 0);	v.color = color;	v.normal.Set(0, 0, 1);		vertex_buffer_data.push_back(v);
 
+	v.pos.Set(lengthX / 2, -lengthY / 2, 0);	v.color = color;	v.normal.Set(0, 0, -1);		vertex_buffer_data.push_back(v);
+	v.pos.Set(lengthX / 2, lengthY / 2, 0);		v.color = color;	v.normal.Set(0, 0, -1);		vertex_buffer_data.push_back(v);
+	v.pos.Set(-lengthX / 2, -lengthY / 2, 0);	v.color = color;	v.normal.Set(0, 0, -1);		vertex_buffer_data.push_back(v);
+	v.pos.Set(-lengthX / 2, lengthY / 2, 0);	v.color = color;	v.normal.Set(0, 0, -1);		vertex_buffer_data.push_back(v);
 
 	for (size_t i = 0; i < 4; ++i){
+		index_buffer_data.push_back(i);
+	}
+	for (size_t i = 3; i < 8; ++i){
 		index_buffer_data.push_back(i);
 	}
 
@@ -594,7 +601,7 @@ Mesh* MeshBuilder::GenerateHemisphere(const std::string &meshName, float lengthX
 
 			v.pos.Set(lengthX*circle_H(theta), 0, lengthZ*circle_V(theta));
 			v.color = color;	
-			v.normal.Set(0, 1, 0);
+			v.normal.Set(lengthX*circle_H(theta), 1, lengthZ*circle_V(theta));
 			vertex_buffer_data.push_back(v);
 		}
 	}

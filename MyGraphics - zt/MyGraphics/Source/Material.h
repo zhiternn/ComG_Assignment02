@@ -22,8 +22,8 @@ struct Material
 	{
 		kAmbient.Set(0.5f, 0.5f, 0.5f);
 		kDiffuse.Set(0.6f, 0.6f, 0.6f);
-		kSpecular.Set(0.25f, 0.25f, 0.25f);
-		kShininess = 1.f;
+		kSpecular.Set(0.f, 0.f, 0.f);
+		kShininess = 0.5f;
 	}
 	void SetToChrome()
 	{

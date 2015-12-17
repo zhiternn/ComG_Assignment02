@@ -54,9 +54,12 @@ class Assignment2 : public Scene
 
 		GEO_SWORD_HAND,
 		GEO_SWORD_HILT,
+		GEO_SWORD_HILT_DECO,
 		GEO_SWORD_GUARD1,
 		GEO_SWORD_GUARD2,
+		GEO_SWORD_GUARD_DECO,
 		GEO_SWORD_MAINBLADE,
+		GEO_SWORD_BLADECORNERS,
 
 		NUM_GEOMETRY
 	};
@@ -116,7 +119,7 @@ private:
 	void RenderBody();
 	void RenderZeroSword(int mirror);
 	void RenderUpperArm(int mirror);
-	void RenderLowerArm(int mirror);
+	void RenderCannon(int mirror);
 	void RenderUpperLeg(int mirror);
 	void RenderLowerLeg(int mirror);
 	void ArrangeTrees(int fromX, int toX, int fromZ, int toZ, int distanceBetweenTrees);
@@ -137,15 +140,20 @@ private:
 	float cannonShooting;
 	float mm_Rotation;
 	float inputDelay;
+	float inputDelaySpd;
 	float bulletX;
 	float bulletZ;
 	float atkSpd;
+	float scaleCannon;
+	float scaleSword;
 
 	bool isShootingAnimation;
 	bool readyForBullets;
 	bool controlMM;
 	bool onLights;
 	bool animateRun;
+	bool holdingCannon;
+	bool changingWeapon;
 
 	int lowerLegDir;
 	int upperLegDir;

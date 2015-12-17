@@ -80,19 +80,9 @@ void Assignment2::Init()
 	camera.Init(Vector3(0, 10, 20), Vector3(0, 10, 0), Vector3(0, 1, 0));
 
 	//MESH GENERATORS
-	//meshList[GEO_QUAD] =		MeshBuilder::GenerateQuad("Quad", 1, 1, Color(1, 1, 1))
-	//meshList[GEO_CUBE] =		MeshBuilder::GenerateCube
-	//meshList[GEO_ELLIPSE] =		MeshBuilder::GenerateEllipse
-	//meshList[GEO_TORUS] =		MeshBuilder::GenerateTorus
-	//meshList[GEO_SPHERE] =		MeshBuilder::GenerateSphere
-	//meshList[GEO_HEMISPHERE] =	MeshBuilder::GenerateHemisphere
-	//meshList[GEO_RING] =		MeshBuilder::GenerateRing
-	//meshList[GEO_CYLINDER] =	MeshBuilder::GenerateCylinder
-	//meshList[GEO_CONE] =		MeshBuilder::GenerateCone
-
 	meshList[GEO_AXES] = MeshBuilder::GenerateAxes("axis", 1000, 1000, 1000);
-	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("sphere", 0.5f, 0.5f, 0.5f, Color(1, 1, 1));
-	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("floor", 1000, 1000, Color(0.3f, 0.3f, 0.3f));
+	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("sphere", 10.f, 10.f, 10.f, Color(1, 1, 0));
+	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("floor", 1000, 1000, Color(0.f, 0.5f, 0.f));
 
 	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("sphere", 0.7f, 0.3f, 0.3f, Color(0.61f, 0.61f, 0));
 
@@ -135,16 +125,27 @@ void Assignment2::Init()
 	meshList[GEO_LEG_FOOT] = MeshBuilder::GenerateHemisphere("hemisphere", 0.9f, 1, 1.3f, Color(0.22f, 0.45f, 0.72f));
 	meshList[GEO_LEG_FOOT]->material.SetToArmorMaterial();
 
-	meshList[GEO_SWORD_HAND] = MeshBuilder::GenerateCylinder("hilt", 0.3f, 0.1f, 0.5f, Color(0.8f, 0.8f, 0.8f), 0.5f, 0.5f);
-	meshList[GEO_SWORD_HILT] = MeshBuilder::GenerateCylinder("hilt", 0.3f, 0.1f, 0.3f, Color(0.8f, 0.8f, 0.8f));
-	meshList[GEO_SWORD_GUARD1] = MeshBuilder::GenerateCylinder("hilt", 0.4f, 0.2f, 0.5f, Color(0.8f, 0.8f, 0.8f), 0.3f, 0.1f);
-	meshList[GEO_SWORD_GUARD2] = MeshBuilder::GenerateCylinder("hilt", 0.3f, 0.1f, 0.3f, Color(0.8f, 0.8f, 0.8f), 0.4f, 0.2f);
-	meshList[GEO_SWORD_MAINBLADE] = MeshBuilder::GenerateCone("blade", 1.f, 0.1f, 5.f, Color(0, 1, 0));
+	meshList[GEO_SWORD_HAND] = MeshBuilder::GenerateCylinder("hand", 0.3f, 0.1f, 0.5f, Color(0.8f, 0.8f, 0.8f), 0.5f, 0.5f);
+	meshList[GEO_SWORD_HILT] = MeshBuilder::GenerateCylinder("hilt", 0.3f, 0.1f, 0.5f, Color(0.8f, 0.8f, 0.8f));
+	meshList[GEO_SWORD_HILT_DECO] = MeshBuilder::GenerateTorus("hiltDeco", 1.f, 0.2f, 0.3f, 0.1f, 0.1f, Color(0, 0, 0));
+	meshList[GEO_SWORD_GUARD1] = MeshBuilder::GenerateCylinder("guard1", 0.4f, 0.2f, 0.2f, Color(0.6f, 0.6f, 0.6f), 0.3f, 0.1f);
+	meshList[GEO_SWORD_GUARD2] = MeshBuilder::GenerateCylinder("guard2", 0.3f, 0.1f, 0.5f, Color(0.8f, 0.8f, 0.8f), 0.4f, 0.2f);
+	meshList[GEO_SWORD_GUARD_DECO] = MeshBuilder::GenerateCylinder("hilt", 0.1f, 0.1f, 0.4f, Color(0.f, 0.5f, 0.f));
+	meshList[GEO_SWORD_MAINBLADE] = MeshBuilder::GenerateCone("blade", 1.f, 0.01f, 5.f, Color(0, 1, 0));
+	meshList[GEO_SWORD_MAINBLADE]->material.kAmbient.Set(0.5f, 0.5f, 0.5f);
+	meshList[GEO_SWORD_MAINBLADE]->material.kDiffuse.Set(0.3f, 0.3f, 0.3f);
+	meshList[GEO_SWORD_MAINBLADE]->material.kSpecular.Set(0.8f, 0.8f, 0.8f);
+	meshList[GEO_SWORD_MAINBLADE]->material.kShininess = 1.f;
+	meshList[GEO_SWORD_BLADECORNERS] = MeshBuilder::GenerateQuad("blade", 1.f, 1.f, Color(0, 1, 0));
+	meshList[GEO_SWORD_BLADECORNERS]->material.kAmbient.Set(0.5f, 0.5f, 0.5f);
+	meshList[GEO_SWORD_BLADECORNERS]->material.kDiffuse.Set(0.3f, 0.3f, 0.3f);
+	meshList[GEO_SWORD_BLADECORNERS]->material.kSpecular.Set(0.8f, 0.8f, 0.8f);
+	meshList[GEO_SWORD_BLADECORNERS]->material.kShininess = 1.f;
 
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
 	//setting up light object
-	light[0].type = Light::LIGHT_POINT;
-	light[0].position.Set(0, 20, 0);
+	light[0].type = Light::LIGHT_DIRECTIONAL;
+	light[0].position.Set(300, 50, 0);
 	light[0].color.Set(1, 1, 1);
 	light[0].power = 1;
 	light[0].kC = 1.f;
@@ -170,7 +171,7 @@ void Assignment2::Init()
 	light[1].type = Light::LIGHT_POINT;
 	light[1].position.Set(0, 8, 0);
 	light[1].color.Set(1, 1, 1);
-	light[1].power = 1;
+	light[1].power = 0;
 	light[1].kC = 1.f;
 	light[1].kL = 0.01f;
 	light[1].kQ = 0.001f;
@@ -203,13 +204,18 @@ void Assignment2::Init()
 	isShootingAnimation = false;
 	readyForBullets = false;
 	animateRun = false;
-
+	holdingCannon = true;
+	changingWeapon = false;
+	
+	scaleCannon = 1.f;
+	scaleSword = 0.1f;
 	upperLegRunning = lowerLegRunning = lowerLegRunValue = 0.f;
 	upperArmShooting = cannonShooting = upperArmRunning = 0.f;
 	lowerLegDir = upperLegDir = 1;
-	bulletX = bulletZ = atkSpd = 0.f;
+	bulletX = bulletZ = atkSpd = 0.f; 
 	
 	inputDelay = 2.f;
+	inputDelaySpd = 1.f;
 }
 
 void Assignment2::RenderMesh(Mesh *mesh, bool enableLight)
@@ -242,7 +248,8 @@ void Assignment2::RenderMesh(Mesh *mesh, bool enableLight)
 
 void Assignment2::Update(double dt)
 {
-	if (Application::IsKeyPressed('P') && inputDelay >= 2.f){
+	// Camera inputs
+	if (Application::IsKeyPressed('P') && inputDelay >= 1.f){
 		inputDelay = 0.f;
 		if (controlMM){
 			controlMM = false;
@@ -253,7 +260,7 @@ void Assignment2::Update(double dt)
 		}
 	}
 	else if (inputDelay < 2.f){
-		inputDelay += (float)(10 * dt);
+		inputDelay += (float)(inputDelaySpd *dt);
 	}
 	if(controlMM){
 		camera.target = mm_Pos;
@@ -264,6 +271,7 @@ void Assignment2::Update(double dt)
 		camera.Update(dt);
 	}
 
+	//MISC inputs
 	if (Application::IsKeyPressed(0x31))
 		glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed(0x32))
@@ -285,14 +293,6 @@ void Assignment2::Update(double dt)
 		light[0].position.y -= (float)(50.f * dt);
 	if (Application::IsKeyPressed('O'))
 		light[0].position.y += (float)(50.f * dt);
-	if (Application::IsKeyPressed('Q')){
-		if (onLights){
-			onLights = false;
-		}
-		else{
-			onLights = true;
-		}
-	}
 	if (Application::IsKeyPressed('B')){
 		light[0].type = Light::LIGHT_POINT;
 		glUniform1i(m_parameters[U_LIGHT0_TYPE], light[0].type);
@@ -305,8 +305,38 @@ void Assignment2::Update(double dt)
 		light[0].type = Light::LIGHT_SPOT;
 		glUniform1i(m_parameters[U_LIGHT0_TYPE], light[0].type);
 	}
+	if (Application::IsKeyPressed('Q') && inputDelay >= 1.f){
+		inputDelay = 0.f;
+		if (onLights){
+			onLights = false;
+		}
+		else{
+			onLights = true;
+		}
+	}
+	else if (inputDelay < 2.f){
+		inputDelay += (float)(inputDelaySpd *dt);
+	}
 
-	if (Application::IsKeyPressed(VK_SPACE)){
+	// Animation inputs
+	if (Application::IsKeyPressed('T') && inputDelay >= 1.f || changingWeapon){
+		static int scaleDir = -1;
+		inputDelay = 0.f;
+		changingWeapon = true;
+
+		scaleCannon += (float)(scaleDir * 3.f * dt);
+		scaleSword += (float)(-scaleDir * 3.f * dt);
+
+		if (scaleSword >= 1.f || scaleCannon >= 1.f){
+			changingWeapon = false;
+			scaleDir = -scaleDir;
+			holdingCannon = !holdingCannon;
+		}
+	}
+	else if (inputDelay < 2.f){
+		inputDelay += (float)(inputDelaySpd *dt);
+	}
+	if (Application::IsKeyPressed(VK_SPACE)){ // shoot animation
 		isShootingAnimation = true;
 
 		if (upperArmRunning == 0)//Makes sure arm is in proper position
@@ -324,7 +354,7 @@ void Assignment2::Update(double dt)
 			upperArmShooting = 0.f;
 		}
 	}
-	if (readyForBullets){
+	if (readyForBullets && holdingCannon){ // bullets starts flying only when hand has finished rotating
 		if (atkSpd == 0.f){
 			bulletDir = mm_Dir;
 		}
@@ -343,8 +373,10 @@ void Assignment2::Update(double dt)
 		atkSpd = 0.f;
 		bulletX = 0;
 		bulletZ = 0;
+		light[1].position.x = mm_Pos.x;
+		light[1].position.z = mm_Pos.z;
 	}
-	if (animateRun){
+	if (animateRun){ // run animation
 		AnimateRun(dt);
 	}
 	else{
@@ -406,12 +438,12 @@ void Assignment2::Render()
 		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
 	if (readyForBullets){
-		light[1].color.Set(1, 1, 1);
-		glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &light[1].color.r);
+		light[1].power = 1;
+		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
 	}
 	else{
-		light[1].color.Set(0, 0, 0);
-		glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &light[1].color.r);
+		light[1].power = 0;
+		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
 	}
 	Position lightPosition_cameraspace = viewStack.Top() * light[1].position;
 	glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
@@ -471,7 +503,12 @@ void Assignment2::Render()
 		modelStack.Rotate(mirror*cannonShooting, 0, 0, 1);
 	/*******************************************************************************/
 
-		//RenderLowerArm(mirror);
+		if (holdingCannon || changingWeapon){
+			modelStack.PushMatrix();
+			modelStack.Scale(scaleCannon, scaleCannon, scaleCannon);
+			RenderCannon(mirror);
+			modelStack.PopMatrix();
+		}
 
 	/*******************************************************************************/
 	// LEVEL 3 - CANNON - END
@@ -485,7 +522,12 @@ void Assignment2::Render()
 		modelStack.Rotate(mirror*90, 0, 0, 1);
 	/*******************************************************************************/
 
-	RenderZeroSword(mirror);
+		if (!holdingCannon || changingWeapon){
+			modelStack.PushMatrix();
+			modelStack.Scale(scaleSword, scaleSword, scaleSword);
+			RenderZeroSword(mirror);
+			modelStack.PopMatrix();
+		}
 
 	/*******************************************************************************/
 	// LEVEL 3 - SWORD - END
@@ -534,7 +576,7 @@ void Assignment2::Render()
 	/*******************************************************************************/
 
 	// render bullet
-	if (readyForBullets){
+	if (readyForBullets && holdingCannon){
 		for (int mirror = 1; mirror >= -1; mirror -= 2){
 			modelStack.PushMatrix();
 			modelStack.Translate(mm_Pos.x + bulletX, 0, mm_Pos.z + bulletZ);
@@ -547,11 +589,6 @@ void Assignment2::Render()
 	}
 
 	RenderTrees();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 17, 0);
-	RenderZeroSword(1);
-	modelStack.PopMatrix();
 }
 
 void Assignment2::Exit()
@@ -564,24 +601,55 @@ void Assignment2::Exit()
 void Assignment2::RenderZeroSword(int mirror)
 {
 	modelStack.PushMatrix();
+	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[GEO_SWORD_HAND], true);
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 0.4f, 0);
+	modelStack.Translate(0, 0.5f, 0);
 	RenderMesh(meshList[GEO_SWORD_HILT], true);
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 0.4f, 0);
+	modelStack.Translate(0, 0.35f, 0);
 	RenderMesh(meshList[GEO_SWORD_GUARD1], true);
 
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 0.4f, 0);
+	modelStack.Translate(0, -0.1f, 0);
+	RenderMesh(meshList[GEO_SWORD_HILT_DECO], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0.35f, 0);
 	RenderMesh(meshList[GEO_SWORD_GUARD2], true);
+	
+	for (int mirror = 1; mirror >= -1; mirror -= 2){
+		modelStack.PushMatrix();
+		modelStack.Translate(mirror*-0.25f, 0, 0);
+		modelStack.Rotate(mirror*-12, 0, 0, 1);
+		RenderMesh(meshList[GEO_SWORD_GUARD_DECO], false);
+		modelStack.PopMatrix();
+	}
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0.2f, 0);
+	modelStack.Scale(1.55f, 1.f, 1.2f);
+	modelStack.Rotate(90, 0, 0, 1);
+	RenderMesh(meshList[GEO_SWORD_GUARD_DECO], false);
+	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0.15f, 0);
-	RenderMesh(meshList[GEO_SWORD_MAINBLADE], true);
-	
+	RenderMesh(meshList[GEO_SWORD_MAINBLADE], !readyForBullets);
+
+	for (int mirror = 1; mirror >= -1; mirror -= 2){
+		modelStack.PushMatrix();
+		modelStack.Translate(mirror*-0.57f, 0.15f, 0);
+		modelStack.Rotate(mirror*47, 0, 0, 1);
+		modelStack.Scale(1.2, 0.6f, 1.2f);
+		modelStack.Rotate(45, 0, 0, 1);
+		RenderMesh(meshList[GEO_SWORD_BLADECORNERS], !readyForBullets);
+		modelStack.PopMatrix();
+	}
+
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
@@ -679,7 +747,7 @@ void Assignment2::RenderUpperArm(int mirror)
 	RenderMesh(meshList[GEO_ARM_UPPER], true);
 	modelStack.PopMatrix();
 }
-void Assignment2::RenderLowerArm(int mirror)
+void Assignment2::RenderCannon(int mirror)
 {
 	RenderMesh(meshList[GEO_ARM_CANNON_CORE], true);
 

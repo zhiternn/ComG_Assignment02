@@ -43,7 +43,7 @@ void Camera::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 
 	phi = 0.f;
 	theta = -90.f;
-	distance = 20.f;
+	distance = -20.f; // it is set to negative to prevent the camPos to snap to opposite end. Since the position and target will "switch" places when Update2 is used
 }
 
 /******************************************************************************/
@@ -123,17 +123,17 @@ void Camera::Update(double dt)
 void Camera::Update2(double dt)
 {
 	if (Application::IsKeyPressed(0x5A)){ // Z
-		if (distance > 3.f)
-			distance -= (float)(50 * dt);
+		if (distance < -3.f)
+			distance += (float)(50 * dt);
 		position.Set(camX(phi, theta)*distance + target.x, camY(phi, theta)*distance + target.y, camZ(phi, theta)*distance + target.z);
 	}
 	if (Application::IsKeyPressed(0x58)){ // X
-		distance += (float)(50 * dt);
+		distance -= (float)(50 * dt);
 		position.Set(camX(phi, theta)*distance + target.x, camY(phi, theta)*distance + target.y, camZ(phi, theta)*distance + target.z);
 	}
 	if (Application::IsKeyPressed(VK_UP)){
-		if (phi <= 60.0f){// prevents camera from ascending once it reached 90 degrees
-			phi += (float)(100 * dt);
+		if (phi >= -60.0f){// prevents camera from ascending once it reached 90 degrees
+			phi -= (float)(100 * dt);
 		}
 		position.Set(camX(phi, theta)*distance + target.x, camY(phi, theta)*distance + target.y, camZ(phi, theta)*distance + target.z);
 	}
@@ -142,8 +142,8 @@ void Camera::Update2(double dt)
 		position.Set(camX(phi, theta)*distance + target.x, camY(phi, theta)*distance + target.y, camZ(phi, theta)*distance + target.z);
 	}
 	if (Application::IsKeyPressed(VK_DOWN)){
-		if (phi >= -60.0f){// prevents camera from descending once it reached -90 degrees
-			phi -= (float)(50 * dt);
+		if (phi <= 60.0f){// prevents camera from descending once it reached -90 degrees
+			phi += (float)(50 * dt);
 		}
 		position.Set(camX(phi, theta)*distance + target.x, camY(phi, theta)*distance + target.y, camZ(phi, theta)*distance + target.z);
 	}
